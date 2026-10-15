@@ -19,10 +19,13 @@ module.exports = function handler(req, res) {
       }
     });
     
+    // Define a dummy handler to satisfy SDK validation
+    builder.defineStreamHandler(() => ({ streams: [] }));
+    
     const addonInterface = builder.getInterface();
     res.json(addonInterface.manifest);
   } catch (err) {
     console.error('Error:', err);
-    res.status(500).json({ error: err.message, stack: err.stack });
+    res.status(500).json({ error: err.message });
   }
 };

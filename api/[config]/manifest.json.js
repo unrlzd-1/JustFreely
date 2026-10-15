@@ -30,6 +30,8 @@ module.exports = function handler(req, res) {
       }
     });
     
+    builder.defineStreamHandler(() => ({ streams: [] }));
+    
     const addonInterface = builder.getInterface();
     res.json(addonInterface.manifest);
   } catch (err) {
