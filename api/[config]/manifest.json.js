@@ -1,0 +1,39 @@
+const { addonBuilder } = require('stremio-addon-sdk');
+
+module.exports = function handler(req, res) {
+  // Set CORS header as required
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  
+  // Get config from query (from dynamic folder [config])
+  const config = req.query?.config;
+  
+  let userConfig = {};
+  if (config) {
+    try {
+      // Decode base64 config
+      const decoded = Buffer.from(config, 'base64').toString('utf-8');
+      userConfig = JSON.parse(decoded);
+    } catch (err) {
+      console.error('Failed to decode config:', err);
+    }
+  }
+  
+  const builder = new addonBuilder({
+    id: 'org.4khdhub.stremio-addon',
+    version: '1.0.0',
+    name: '4KHDHub Addon',
+    description: 'Stremio addon for 4KHDHub streaming links',
+    resources: ['stream'],
+    types: ['movie', 'series'],
+    idPrefixes: ['tt'],
+    catalogs: [],
+    behaviorHints: {
+      configurable: true,
+      configurationRequired: false
+    }
+  });
+  
+  // Return manifest
+  const manifest = builder.getManifest();
+  res.json(manifest);
+};
