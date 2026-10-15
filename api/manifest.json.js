@@ -19,8 +19,8 @@ module.exports = function handler(req, res) {
       }
     });
     
-    const manifest = builder.getManifest();
-    res.json(manifest);
+    const addonInterface = builder.getInterface();
+    res.json(addonInterface.manifest);
   } catch (err) {
     console.error('Error:', err);
     res.status(500).json({ error: err.message, stack: err.stack });
